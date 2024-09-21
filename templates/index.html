@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salary Prediction App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      input,
+      button {
+        font-size: 16px;
+        padding: 5px;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Salary Prediction App</h1>
+    <p>Enter years of experience to predict salary:</p>
+    <input
+      type="number"
+      id="years"
+      step="0.1"
+      min="0"
+      placeholder="Years of experience"
+    />
+    <button onclick="predict()">Predict</button>
+    <div id="result"></div>
+    <img
+      src="/static/salary_prediction_plot.png"
+      alt="Salary Prediction Plot"
+    />
+
+    <script>
+      async function predict() {
+        const years = document.getElementById("years").value;
+        try {
+          const response = await axios.post(
+            "/predict",
+            new URLSearchParams({ years })
+          );
+          document.getElementById(
+            "result"
+          ).innerText = `Predicted Salary: $${response.data.prediction}`;
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("result").innerText =
+            "An error occurred during prediction.";
+        }
+      }
+    </script>
+  </body>
+</html>
